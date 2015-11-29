@@ -1,0 +1,83 @@
+<script src='http://cdn.html5quintus.com/v0.2.0/quintus-all.js'></script>
+<script type="text/javascript">
+// # Quintus platformer example
+var Q = window.Q = Quintus({ development: true,  
+									imagePath: "platformer/images/",
+                  dataPath: "platformer/data/"})
+	    .include("Sprites, Scenes, Input, 2D, Anim, UI, Touch")
+	    .setup({ maximize: true }).controls().touch()
+
+// ## Player Sprite
+Q.Sprite.extend("Player",{
+  init: function(p) {
+		this._super(p, {sheet: "player" });
+		this.add('2d, platformerControls');
+		this.on("hit.sprite",function(collision) {
+			if(collision.obj.isA("Tower")) {
+			  Q.stageScene("endGame",1,{ label: "You Won!" }); 
+			  this.destroy();
+			}
+		});
+  }
+});
+
+// ## Tower Sprite
+Q.Sprite.extend("Tower", {
+  init: function(p) {
+		this._super(p, { sheet: 'tower' });
+  }
+});
+
+// ## Enemy Sprite
+Q.Sprite.extend("Enemy",{
+  init: function(p) {
+		this._super(p, { sheet: 'enemy', vx: 50 });
+		this.add('2d, aiBounce');
+
+		this.on("bump.left,bump.right,bump.bottom",function(collision) {
+			if(collision.obj.isA("Player")) { 
+			  Q.stageScene("endGame",1,{ label: "You Died!" }); 
+			  collision.obj.destroy();
+			}
+		});
+		this.on("bump.top",function(collision) {
+			if(collision.obj.isA("Player")) { 
+			  this.destroy();
+			  collision.obj.p.vy = -300;
+			}
+		});
+  }
+});
+
+// ## Level1 scene
+Q.scene("level1",function(stage) {
+  stage.insert(new Q.Repeater({ asset: "background.png", speedX: 0.5, speedY: 0.5 }));
+  stage.collisionLayer(new Q.TileLayer({dataAsset: 'level.json',sheet: 'tiles' }));
+
+  var player = stage.insert(new Q.Player({ x: 400, y: 50 }));
+  stage.add("viewport").follow(player);
+
+  stage.insert(new Q.Enemy({ x: 700, y: 0 }));
+  stage.insert(new Q.Tower({ x: 200, y: 113 }));
+});
+
+// ## End scene
+Q.scene('endGame',function(stage) {
+  var container = stage.insert(new Q.UI.Container({ x: Q.width/2, y: Q.height/2, fill: "rgba(0,0,0,0.5)"}));
+	var button = container.insert(new Q.UI.Button({ x: 0, y: 0, fill: "#CCCCCC", label: "OK" }))         
+	var label = container.insert(new Q.UI.Text({x:10, y: -10 - button.p.h, label: stage.options.label }));
+	
+	button.on("click",function() {
+		Q.clearStages();
+		//Q.stageScene('level1');
+	});
+	container.fit(20);
+});
+
+// ## Asset Loading and Game Launch
+Q.load("sprites.png, sprites.json, level.json, tiles.png, background.png", function() {
+  Q.sheet("tiles","tiles.png", { tilew: 32, tileh: 32 });
+  Q.compileSheets("sprites.png","sprites.json");
+  Q.stageScene("level1");
+});
+</script>
