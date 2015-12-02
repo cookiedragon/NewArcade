@@ -1,4 +1,5 @@
 // setup server stuff
+var cors = require('cors');
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
@@ -6,6 +7,15 @@ var io = require('socket.io').listen(server);
 
 // listen to specific port
 server.listen(8080);
+
+// do cors stuff
+app.use(cors());
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept,Authorization,access-control-allow-origin");
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  next();
+});
 
 // configure folder for static files
 app.use(express.static('server'));
