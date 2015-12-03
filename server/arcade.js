@@ -1,5 +1,5 @@
 // connect to the server
-var socket = io.connect('http://192.168.2.114:8080/arcade');
+var socket = io.connect('http://141.22.65.111:8080/arcade');
 // register as an arcade view
 socket.emit('message', { text: 'hello' }, 'arcade');
 // setup basic messaging
@@ -18,8 +18,17 @@ socket.on('left', function(from) { console.log('LEFT'); });
 socket.on('right', function(from) { console.log('RIGHT'); });
 socket.on('tap', function(from) { handleTap() });
 
+//$("#qrcode").qrcode('http://141.22.65.111:8080');
+
+	
 // load more content when button clicked
 $(document).ready(function(){
+
+	jQuery('#qrcodeTable').qrcode({
+		render	: "table",
+		text	: "http://141.22.65.111:8080"
+	});
+
   $("#platformer").click(function() {
     $("#playground").load("platformer.html");
   });
