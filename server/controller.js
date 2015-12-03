@@ -1,3 +1,7 @@
+var noSleep = new NoSleep();
+
+noSleep.enable();
+
 // connect to the server
 var socket = io.connect('http://192.168.2.114:8080/controller');
 // generate a unique id
@@ -7,6 +11,7 @@ socket.emit('message', { text: 'hello' }, client);
 
 // listen for tilt events to navigate
 if (window.DeviceOrientationEvent) {
+document.write("New Arcade");
 	console.log("DeviceOrientation is supported");
 	var events = 0;
 	window.addEventListener('deviceorientation', function(eventData) {
@@ -20,6 +25,8 @@ if (window.DeviceOrientationEvent) {
 			else if (eventData.beta < -5) { socket.emit('down', client); }
 		}
 	}, false);
+}else{
+document.write("DeviceOrientation is not supported");
 }
 
 // listen for taps

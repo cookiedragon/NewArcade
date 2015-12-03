@@ -45,6 +45,12 @@ socket.on('tap', function(from) {
 });
 
 $(document).ready(function(){
+
+	jQuery('#qrcodeTable').qrcode({
+		render	: "table",
+		text	: "http://192.168.2.114:8080"
+	});
+	
 	for(i = 1; i <= buttons; i++) {
 		$('<button/>', {
 			text: 'Platformer ' + i,
