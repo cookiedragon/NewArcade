@@ -7,20 +7,55 @@ socket.on('message', function(message, from) {
 	console.log(from + ': ' + message.text);
 });
 
-// handle commands to navigate
-function handleTap() {
+var buttons = 16;
+var rows = 4;
+
+socket.on('up', function(from) {
+	console.log('UP');
+	var c = parseInt($(':focus').attr('id'));
+	var u = c > rows ? (c - rows) : (c + buttons - rows);
+	$('#' + u).focus();
+});
+
+socket.on('down', function(from) {
+	console.log('DOWN');
+	var c = parseInt($(':focus').attr('id'));
+	var d = (buttons - c) > rows ? (c + rows) : (c - buttons + rows);
+	$('#' + d).focus();
+});
+
+socket.on('left', function(from) {
+	console.log('LEFT');
+	var c = parseInt($(':focus').attr('id'));
+	var l = c == 1 ? buttons : (c - 1);
+	$('#' + l).focus();
+});
+
+socket.on('right', function(from) {
+	console.log('RIGHT');
+	var c = parseInt($(':focus').attr('id'));
+	var r = c == buttons ? 1 : (c + 1);
+	$('#' + r).focus();
+});
+
+socket.on('tap', function(from) { 
 	console.log('TAP');
-}
+	$(':focus').click();
+	$('#buttons').hide();
+});
 
-socket.on('up', function(from) { console.log('UP'); });
-socket.on('down', function(from) { console.log('DOWN'); });
-socket.on('left', function(from) { console.log('LEFT'); });
-socket.on('right', function(from) { console.log('RIGHT'); });
-socket.on('tap', function(from) { handleTap() });
-
-// load more content when button clicked
 $(document).ready(function(){
-  $("#platformer").click(function() {
-    $("#playground").load("platformer.html");
-  });
+	for(i = 1; i <= buttons; i++) {
+		$('<button/>', {
+			text: 'Platformer ' + i,
+			id: '' + i,
+			click: function () {
+				$("#playground").load("platformer.html");
+			}
+		}).appendTo('body');
+		if (i % rows == 0) {
+			$('</br>').appendTo('body');
+		}
+	}
+	$('#1').focus();
 });
