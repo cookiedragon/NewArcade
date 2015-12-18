@@ -1,5 +1,5 @@
 // connect to the server
-var socket = io.connect('http://192.168.2.114:8080/arcade');
+var socket = io.connect(site + '/arcade');
 // register as an arcade view
 socket.emit('message', { text: 'hello' }, 'arcade');
 // setup basic messaging
@@ -48,7 +48,7 @@ $(document).ready(function(){
 
 	jQuery('#qrcodeTable').qrcode({
 		render	: "table",
-		text	: "http://192.168.2.114:8080"
+		text	: site
 	});
 	
 	for(i = 1; i <= buttons; i++) {
