@@ -3,7 +3,7 @@ var noSleep = new NoSleep();
 noSleep.enable();
 
 // connect to the server
-var socket = io.connect('http://192.168.2.114:8080/controller');
+var socket = io.connect(site + '/controller');
 // generate a unique id
 var client = new Date().getTime();
 // register as a client
