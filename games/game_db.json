@@ -43,5 +43,10 @@
         "name" : "random_game",
         "icon": "/resources/Hello_kitty_character_portrait.png",
         "link" : "/platformer.html"
+    },
+        {
+        "name" : "stupid_game",
+        "icon": "/resources/220px-Dispersion_prism.jpg",
+        "link" : "/platformer.html"
     }
 ]}
