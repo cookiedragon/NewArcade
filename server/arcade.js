@@ -8,40 +8,45 @@ socket.on('message', function(message, from) {
 });
 
 var NUMBER_OF_GAMES = -1; //init at -1 cause we do counting and want  to use this to access an array-like element, dont change
-var NUMBER_OF_ROWS; //initialized in document.ready(), dont change
 var icons = 16;
-var rows = 4;
+var columns = 4;
 var selected_game = 0;
 var gamelist;
 
 socket.on('up', function(from) {
 	console.log('UP');
 
-
-	/*var c = parseInt($(':focus').attr('id'));
-	var u = c > rows ? (c - rows) : (c + icons - rows);
-	$('#' + u).focus();*/
+    var previously_selected_game = selected_game; //in order to save a $ call and to prevent flickering
+    var current_column = (selected_game % columns) ;
+    var next_game_in_current_column = (selected_game - columns);
+    var last_game_in_current_column = 0;
+    
+    for( i=current_column; i<NUMBER_OF_GAMES; i+=columns){//find last game thorugh probing
+        last_game_in_current_column = i;
+    }
+    
+    selected_game = (next_game_in_current_column > -1) ? next_game_in_current_column : last_game_in_current_column;
+    
+    if(selected_game !== previously_selected_game){ //selected game has changed so move the border
+        $( "#gallery" ).find("#game"+previously_selected_game).removeClass('selected_gallery_item');
+        $( "#gallery" ).find("#game"+selected_game).addClass('selected_gallery_item');
+    }
 });
 
 socket.on('down', function(from) {
 	console.log('DOWN');
     
     var previously_selected_game = selected_game; //in order to save a $ call and to prevent flickering
-    var current_column = (selected_game % rows) ;
-    var next_game_in_current_column = (selected_game + rows)
+    var current_column = (selected_game % columns) ;
+    var next_game_in_current_column = (selected_game + columns)
     
     /*if we're in last row go to first row- but keep column*/
     selected_game = (next_game_in_current_column <= NUMBER_OF_GAMES) ? next_game_in_current_column : current_column;
     
-    $("body").append(NUMBER_OF_GAMES +" col: " + current_column +"</br>");
     if(selected_game !== previously_selected_game){ //selected game has changed so move the border
         $( "#gallery" ).find("#game"+previously_selected_game).removeClass('selected_gallery_item');
         $( "#gallery" ).find("#game"+selected_game).addClass('selected_gallery_item');
     }
-    /*
-	var c = parseInt($(':focus').attr('id'));
-	var d = (icons - c) > rows ? (c + rows) : (c - icons + rows);
-	$('#' + d).focus();*/
 });
 
 socket.on('left', function(from) {
@@ -55,10 +60,6 @@ socket.on('left', function(from) {
         $( "#gallery" ).find("#game"+previously_selected_game).removeClass('selected_gallery_item');
         $( "#gallery" ).find("#game"+selected_game).addClass('selected_gallery_item');
     }
-    /*
-	var c = parseInt($(':focus').attr('id'));
-	var l = c == 1 ? icons : (c - 1);
-	$('#' + l).focus();*/
 });
 
 socket.on('right', function(from) {
@@ -72,28 +73,13 @@ socket.on('right', function(from) {
         $( "#gallery" ).find("#game"+previously_selected_game).removeClass('selected_gallery_item');
         $( "#gallery" ).find("#game"+selected_game).addClass('selected_gallery_item');
     }
-	/*var c = parseInt($(':focus').attr('id'));
-	var r = c == icons ? 1 : (c + 1);
-	$('#' + r).focus();*/
 });
 
 socket.on('tap', function(from) { 
 	console.log('TAP');
-    
-    var previously_selected_game = selected_game; //in order to save a $ call and to prevent flickering
-    var current_column = (selected_game % rows) ;
-    var next_game_in_current_column = (selected_game - rows);
-    var last_game_in_current_column = NUMBER_OF_GAMES - (3 + NUMBER_OF_GAMES % rows); //FIXME: Im wrong
-    
-    selected_game = (next_game_in_current_column > 0) ? next_game_in_current_column : last_game_in_current_column;
-    
-    $("body").append("selected: " + selected_game +" max: " + last_game_in_current_column +"</br>");
-    if(selected_game !== previously_selected_game){ //selected game has changed so move the border
-        $( "#gallery" ).find("#game"+previously_selected_game).removeClass('selected_gallery_item');
-        $( "#gallery" ).find("#game"+selected_game).addClass('selected_gallery_item');
-    }
-	//$(':focus').click();
-	//$('#icons').hide();
+   
+	$("#gallery").hide();
+    $("#playground").load("platformer.html");
 });
   
 $(document).ready(function(){
@@ -116,8 +102,6 @@ $(document).ready(function(){
          html: items.join( "" )
        }).insertBefore( "#playground" );
       });
-      
-      NUMBER_OF_ROWS = Math.trunc(NUMBER_OF_GAMES / rows);
       
       /*This element has a (visible) border. It's our default selection*/
       window.setTimeout(function(){
