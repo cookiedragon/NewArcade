@@ -9,10 +9,12 @@ var client = new Date().getTime();
 // register as a client
 socket.emit('message', { text: 'hello' }, client);
 
-// listen for tilt events to navigate
+// if tilt is supported
 if (window.DeviceOrientationEvent) {
 document.write("New Arcade");
-	console.log("DeviceOrientation is supported");
+	document.write("DeviceOrientation is supported");
+	
+	// listen for tilt events to navigate
 	var events = 0;
 	window.addEventListener('deviceorientation', function(eventData) {
 		events += 1;
@@ -25,12 +27,28 @@ document.write("New Arcade");
 			else if (eventData.beta < -5) { socket.emit('down', client); }
 		}
 	}, false);
-}else{
-document.write("DeviceOrientation is not supported");
+	
+	// listen for taps
+	window.addEventListener("touchstart", function (e) {
+		e.preventDefault();
+		socket.emit('tap', client);
+	}, false);
+}else{ // ... do a fallback with stupid buttons
+	document.write("DeviceOrientation is not supported");
 }
 
-// listen for taps
-window.addEventListener("touchstart", function (e) {
-	e.preventDefault();
-	socket.emit('tap', client);
-}, false);
+function handleButton(action) {
+	socket.emit(action, client);
+}
+
+// listen for touch buttons
+var upButton = document.getElementById("upButton");
+upButton.addEventListener("touchstart", handleButton('up'), false);
+var downButton = document.getElementById("downButton");
+downButton.addEventListener("touchstart", handleButton('down'), false);
+var leftButton = document.getElementById("leftButton");
+leftButton.addEventListener("touchstart", handleButton('left'), false);
+var rightButton = document.getElementById("rightButton");
+rightButton.addEventListener("touchstart", handleButton('right'), false);
+var checkButton = document.getElementById("checkButton");
+checkButton.addEventListener("touchstart", handleButton('tap'), false);

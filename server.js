@@ -42,10 +42,30 @@ arcade.on('connection', function (socket) {
   });
 });
 
-// pass on input events from the controller to the arcade view
+var gameIsOn = false;
+
+// messaging with the game view
+var game = io.of('/game');
+game.on('connection', function (socket) {
+	gameIsOn = true;
+  socket.on('message', function(message, from) {
+		console.log(from + ': ' + message.text);
+		socket.emit('message', { text: 'hello' }, 'server');
+  });
+  socket.on('gameout', function(message, from) {
+		console.log(from + ': ' + message.text);
+		gameIsOn = false;
+  });
+});
+
+// pass on input events from the controller
 function handleInput(action, from) {
 	console.log(from + ': ' + action);
-	arcade.emit(action, 'server');
+	if (!gameIsOn) {
+		arcade.emit(action, 'server');
+	} else {
+		game.emit(action, from);
+	}
 }
 
 // messaging with the controller
@@ -55,7 +75,7 @@ controller.on('connection', function (socket) {
   socket.on('down', function(from) { handleInput('down', from) });
   socket.on('left', function(from) { handleInput('left', from) });
   socket.on('right', function(from) { handleInput('right', from) });
-  socket.on('tap', function(from) { handleInput('tap', from) });
+  socket.on('tap', function(from) { handleInput('tap', from); });
   socket.on('message', function(message, from) {
 		console.log(from + ': ' + message.text);
   });

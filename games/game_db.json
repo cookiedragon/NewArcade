@@ -1,13 +1,13 @@
 {"game_db":[
     {
-        "name" : "Platformer1",
+        "name" : "Breakout",
         "icon": "/resources/Hello_kitty_character_portrait.png",
-        "link" : "/platformer.html"
+        "link" : "/breakout.html"
     },
     {
-        "name" : "Platformer2",
+        "name" : "Pong",
         "icon": "/resources/220px-Dispersion_prism.jpg",
-        "link" : "/platformer.html"
+        "link" : "/pong.html"
     },
     {
         "name" : "shooter",
