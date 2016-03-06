@@ -79,7 +79,11 @@ socket.on('tap', function(from) {
 	console.log('TAP');
    
 	$("#gallery").hide();
-    $("#playground").load("breakout.html");
+	if (selected_game % 2 == 0) {
+		$("#playground").load("pong.html");
+	} else{
+		$("#playground").load("breakout.html");
+	}  
 });
   
 $(document).ready(function(){

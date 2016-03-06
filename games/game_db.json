@@ -1,52 +1,52 @@
 {"game_db":[
     {
         "name" : "Breakout",
-        "icon": "/resources/Hello_kitty_character_portrait.png",
+        "icon": "/resources/Smiley.png",
         "link" : "/breakout.html"
     },
     {
         "name" : "Pong",
-        "icon": "/resources/220px-Dispersion_prism.jpg",
+        "icon": "/resources/SmileyBlack.png",
         "link" : "/pong.html"
     },
     {
         "name" : "shooter",
-        "icon": "/resources/Hello_kitty_character_portrait.png",
+        "icon": "/resources/Smiley.png",
         "link" : "/platformer.html"
     },
     {
         "name" : "card_game",
-        "icon": "/resources/220px-Dispersion_prism.jpg",
+        "icon": "/resources/SmileyBlack.png",
         "link" : "/platformer.html"
     },    
         {
         "name" : "racing_game",
-        "icon": "/resources/Hello_kitty_character_portrait.png",
+        "icon": "/resources/Smiley.png",
         "link" : "/platformer.html"
     },
     {
         "name" : "innovative_game",
-        "icon": "/resources/220px-Dispersion_prism.jpg",
+        "icon": "/resources/SmileyBlack.png",
         "link" : "/platformer.html"
     },
     {
         "name" : "running_out_of_names_game",
-        "icon": "/resources/Hello_kitty_character_portrait.png",
+        "icon": "/resources/Smiley.png",
         "link" : "/platformer.html"
     },
     {
         "name" : "some_game",
-        "icon": "/resources/220px-Dispersion_prism.jpg",
+        "icon": "/resources/SmileyBlack.png",
         "link" : "/platformer.html"
     },
     {
         "name" : "random_game",
-        "icon": "/resources/Hello_kitty_character_portrait.png",
+        "icon": "/resources/Smiley.png",
         "link" : "/platformer.html"
     },
         {
         "name" : "stupid_game",
-        "icon": "/resources/220px-Dispersion_prism.jpg",
+        "icon": "/resources/SmileyBlack.png",
         "link" : "/platformer.html"
     }
 ]}
