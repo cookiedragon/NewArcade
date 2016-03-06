@@ -79,7 +79,7 @@ socket.on('tap', function(from) {
 	console.log('TAP');
    
 	$("#gallery").hide();
-    $("#playground").load("pong.html");
+    $("#playground").load("breakout.html");
 });
   
 $(document).ready(function(){

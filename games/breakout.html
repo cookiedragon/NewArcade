@@ -30,17 +30,28 @@ function triggerRemoteKey(keyCode) {
   document.dispatchEvent(up);
 }
 
+var rightPressed = false;
+var leftPressed = false;
+
 socket.on('right', function(message, from) {
 	triggerRemoteKey(39);
+	rightPressed = true;
+	leftPressed = false;
 });
 socket.on('left', function(message, from) {
 	triggerRemoteKey(37);
+	leftPressed = true;
+	rightPressed = false;
 });
 socket.on('up', function(message, from) {
 	triggerRemoteKey(38);
+	rightPressed = false;
+	leftPressed = false;
 });
 socket.on('down', function(message, from) {
 	triggerRemoteKey(40);
+	rightPressed = false;
+	leftPressed = false;
 });
 
 var canvas = document.getElementById("myCanvas");
@@ -55,8 +66,6 @@ var dy = -2;
 var paddleHeight = 10;
 var paddleWidth = 75;
 var paddleX = (canvas.width-paddleWidth)/2;
-var rightPressed = false;
-var leftPressed = false;
 
 var brickRowCount = 3;
 var brickColumnCount = 5;
@@ -216,9 +225,11 @@ function draw() {
   }
 
 	if(rightPressed && paddleX < canvas.width-paddleWidth) {
-    paddleX += 7;
+    paddleX += 30;
+    rightPressed = false;
   } else if(leftPressed && paddleX > 0) {
-    paddleX -= 7;
+    paddleX -= 30;
+    leftPressed = false;
   }
   
   x += dx;
